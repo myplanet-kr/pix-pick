@@ -1,16 +1,18 @@
 'use strict';
 
 const gm = require('gm')
+const { exec } = require('child_process');
 const axios = require('axios')
-
 const header = Buffer.from('474946383961', 'hex');
 const logicalScreenDescriptor = Buffer.from('01000100800100', 'hex');
 const imageDescriptor = Buffer.from('2c000000000100010000', 'hex');
 const imageData = Buffer.from('0202440100', 'hex');
 
+module.exports.fetchedPixelPicForServer = fetchedPixelPic;
 module.exports.fetchedPixelPic = async (event) => {
   const { queryStringParameters } = event;
   const imgUrl = queryStringParameters.imgUrl;
+
   if (!imgUrl) {
     const err = new CustomError();
     return {
@@ -43,14 +45,14 @@ module.exports.fetchedPixelPic = async (event) => {
 };
 
 function pixelPick(target) {
-  return new Promise((resolve, reject) => {
-    console.log('readable')
-    console.log(target)
+  return new Promise((resolve) => {
     gm(target)
       .resize(250, 250)
       .colors(1)
-      .toBuffer('RGB', function (err, buffer) {
-        if (err) return reject(err);
+      .toBuffer(function (err, buffer) {
+        console.error(err);
+        console.log('buff ', buffer);
+        if (err) throw err;
           const gif = [
               header,
               logicalScreenDescriptor,
