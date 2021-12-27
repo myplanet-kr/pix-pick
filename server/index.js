@@ -2,12 +2,11 @@ const http = require('http');
 const url = require('url');
 const handler = require('./../handler');
 
-
 const requestListener = async function (req, res) {
   const { imgUrl } = url.parse(req.url, true).query;
-  const r =  await handler.fetchedPixelPicForServer(imgUrl);
+  const { body } = await handler.fetchedPixelPic({ queryStringParameters: { imgUrl }});
   res.writeHead(200);
-  res.end(JSON.stringify({ test: 'hello' }));
+  res.end(body);
 }
 
 const server = http.createServer(requestListener);
