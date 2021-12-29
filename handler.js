@@ -44,7 +44,7 @@ module.exports.fetchedPixelPic = async (event) => {
   }
 };
 
-function pixelPick(target) {
+export function pixelPick(target) {
   return new Promise((resolve) => {
     gm(target)
       .resize(250, 250)
