@@ -49,9 +49,7 @@ function pixelPick(target) {
     gm(target)
       .resize(250, 250)
       .colors(1)
-      .toBuffer(function (err, buffer) {
-        console.error(err);
-        console.log('buff ', buffer);
+      .toBuffer('RGB', function (err, buffer) {
         if (err) throw err;
           const gif = [
               header,
